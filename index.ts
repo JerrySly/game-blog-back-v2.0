@@ -8,10 +8,12 @@ import { InversifyExpressServer } from "inversify-express-utils";
 import container from "./inversify.config";
 
 import './controllers/post.controller';
+import './controllers/auth.controller';
+import bodyParser from "body-parser";
 
 dotenv.config();
 const app = express();
-
+app.use(bodyParser.json());
 
 
 try {

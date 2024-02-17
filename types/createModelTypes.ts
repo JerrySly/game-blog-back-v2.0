@@ -5,3 +5,10 @@ export interface PostCreateModel extends CreateModel {
     mainText: string;
     title: string;
 }
+
+export interface UserCreateModel extends CreateModel {
+    email: string,
+    password: string,
+    nickname: string,
+    role?: number,
+}

@@ -169,4 +169,5 @@ export const initTables = async (sequelize: Sequelize) => {
         sequelize,
         modelName: 'Like'
     });
+sequelize.sync()
 }

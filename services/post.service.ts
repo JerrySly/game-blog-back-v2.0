@@ -16,7 +16,7 @@ interface PostPageRequest extends PageRequest {
 export class PostService extends Service {
 
   private repository: IRepository<Post>;
-  constructor(@inject(TYPES.IRepository) repository: IRepository<Post>, @inject(TYPES.ILogger) loggerInstance: ILogger) {
+  constructor(@inject(TYPES.PostRepository) repository: IRepository<Post>, @inject(TYPES.ILogger) loggerInstance: ILogger) {
     super(loggerInstance);
     this.repository = repository;
   }

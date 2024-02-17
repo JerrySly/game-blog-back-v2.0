@@ -1,7 +1,9 @@
 const TYPES = {
     ILogger: Symbol('ILogger'),
-    IRepository: Symbol('IRepository'),
-    Service: Symbol('Service'),
+    UserRepository: Symbol('UserRepository'),
+    PostRepository: Symbol('PostRepository'),
+    PostService: Symbol('PostService'),
+    AuthService: Symbol('AuthService'),
 };
 
 export default TYPES;

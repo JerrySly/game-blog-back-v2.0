@@ -1,17 +1,14 @@
-import { WinstonLogger } from './../utils/logger';
 import { FindAndCountOptions, Model, Op, WhereOptions } from "sequelize";
 import { IRepository } from ".";
-import { CreateModel, PostCreateModel } from "../types/createModelTypes";
+import { UserCreateModel } from "../types/createModelTypes";
 import { PageRequest, PageResponse } from "../types/page";
-import { TYPE } from "inversify-express-utils";
 import { ILogger } from '../interfaces';
 import TYPES from '../types';
 import { inject, injectable } from 'inversify';
-import sequelize from 'sequelize';
-import { Post } from '../database/initTables';
+import { User } from '../database/initTables';
 
 @injectable()
-export class PostRepository implements IRepository<Post> {
+export class UserRepository implements IRepository<User> {
 
     loggerInstance: ILogger;
 
@@ -19,67 +16,68 @@ export class PostRepository implements IRepository<Post> {
         this.loggerInstance = winstonLogger;
     }
 
-    async create(createEntity: PostCreateModel) {
+    async create(createEntity: UserCreateModel) {
         try {
-            const post = Post.build({...createEntity});
-            await post.save();
-            this.loggerInstance.log(`Successfull create post uuid = ${post.uuid}`);
+            const user = User.build({...createEntity});
+            await user.save();
+            this.loggerInstance.log(`Successfull create user uuid = ${user.uuid}`);
         } catch (e) {
-            this.loggerInstance.error(`Create ${Post.toString()} error: ${e}`);
+            this.loggerInstance.error(`Create ${User.toString()} error: ${e}`);
         }
     }
-    async update(entity: Omit<Post, keyof Model>): Promise<void> {
+    async update(entity: Omit<User, keyof Model>): Promise<void> {
         try {
             const exitedEntity = await this.get(entity.uuid);
             if (!exitedEntity) throw new Error('Entity is not exits');
-            Post.update({
+            User.update({
                 ...entity
             }, {
               where: {
                 uuid: entity.uuid,
               }
             })
-            this.loggerInstance.log(`Successfull update post uuid = ${entity.uuid}`);
+            this.loggerInstance.log(`Successfull update user uuid = ${entity.uuid}`);
         } catch (error) {
-            this.loggerInstance.error(`Update ${Post.toString()} uuid = ${entity.uuid} error: ${error}`);
+            this.loggerInstance.error(`Update ${User.toString()} uuid = ${entity.uuid} error: ${error}`);
             throw new Error('Update is cancelled');
         }
     }
     async delete(uuid: string): Promise<void> {
         try {
-            await Post.destroy({
+            await User.destroy({
                 where: {
                     uuid
                 }
             })
-            this.loggerInstance.log(`Successfull delete post uuid = ${uuid}`);
+            this.loggerInstance.log(`Successfull delete user uuid = ${uuid}`);
         }
         catch (error) {
-            this.loggerInstance.error(`Delete ${Post.toString()} uuid = ${uuid} error: ${error}`);
+            this.loggerInstance.error(`Delete ${User.toString()} uuid = ${uuid} error: ${error}`);
             throw new Error(`Deleting is canceled ${error}`);
         }
     }
-    async get(uuid: string): Promise<Post | undefined> {
+    async get(uuid: string): Promise<User | undefined> {
         try {
-            const whereOptions: WhereOptions<Post> = {
+            const whereOptions: WhereOptions<User> = {
                 uuid,
             }
-            const result = (await Post.findOne({
+            const result = (await User.findOne({
                 where: whereOptions,
             }));
             if (!result) {
                 throw Error('No entity');
             }
-            this.loggerInstance.log(`Successfull get post uuid = ${uuid}`);
+            this.loggerInstance.log(`Successfull get user uuid = ${uuid}`);
             return result?.dataValues;
         } catch (error) {
-            this.loggerInstance.error(`Get ${Post.toString()} uuid = ${uuid} error: ${error}`);
+            this.loggerInstance.error(`Get ${User.toString()} uuid = ${uuid} error: ${error}`);
         } finally {
             return undefined;
         }
     }
-    async getList(pageRequest: PageRequest): Promise<PageResponse<Post> | undefined> {
+    async getList(pageRequest: PageRequest): Promise<PageResponse<User> | undefined> {
         try {
+            console.log(pageRequest);
             const seqRequest: FindAndCountOptions = {
                 limit: pageRequest.amount,
                 offset: (pageRequest.pageNumber - 1) * pageRequest.amount,
@@ -89,17 +87,17 @@ export class PostRepository implements IRepository<Post> {
             ];
             if (pageRequest.search) {
                 seqRequest.where = {
-                    title: {
+                    nickname: {
                         [Op.substring]: pageRequest.search
                     }
                 }
             }
             console.log('prev');
-            const data = await Post.findAndCountAll(seqRequest);
+            const data = await User.findAndCountAll(seqRequest);
             console.log('Data', data);
             return data;
         } catch (error) {
-            this.loggerInstance.error(`Get list of ${Post.toString()} error: ${error}`);
+            this.loggerInstance.error(`Get list of ${User.toString()} error: ${error}`);
         } finally {
             return undefined
         }

@@ -1,18 +1,16 @@
 import { Request, Response } from "express";
 import { controller, httpDelete, httpGet, httpPost, httpPut, interfaces, request, response } from "inversify-express-utils";
-import { send } from "process";
 import TYPES from "../types";
 import { PostService } from "../services/post.service";
 import { inject } from "inversify";
 import { ILogger } from "../interfaces";
 import { PageRequest } from "../types/page";
-import { Service } from "../services";
 
 @controller('/post')
 export class PostController implements interfaces.Controller {
     private postService: PostService;
     private logger: ILogger;
-    constructor(@inject(TYPES.Service) postService: PostService, @inject(TYPES.ILogger) logger: ILogger) {
+    constructor(@inject(TYPES.PostService) postService: PostService, @inject(TYPES.ILogger) logger: ILogger) {
         this.postService = postService;
         this.logger = logger;
     }
