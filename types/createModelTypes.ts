@@ -12,3 +12,9 @@ export interface UserCreateModel extends CreateModel {
     nickname: string,
     role?: number,
 }
+
+export interface CommentCreateModel extends CreateModel {
+    text: string,
+    createdBy: string,
+    parrent: string,
+}

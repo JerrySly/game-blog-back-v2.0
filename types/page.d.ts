@@ -3,6 +3,7 @@ export type PageRequest = {
   amount: number,
   search?: string | null,
   date?: Date,
+  entityUuid?: string,
 }
 
 export type PageResponse<T> = {

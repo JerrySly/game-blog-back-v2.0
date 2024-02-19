@@ -9,6 +9,7 @@ import container from "./inversify.config";
 
 import './controllers/post.controller';
 import './controllers/auth.controller';
+import './controllers/comment.controller';
 import bodyParser from "body-parser";
 
 dotenv.config();

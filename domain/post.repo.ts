@@ -1,4 +1,4 @@
-import { WinstonLogger } from './../utils/logger';
+import { WinstonLogger } from '../utils/logger';
 import { FindAndCountOptions, Model, Op, WhereOptions } from "sequelize";
 import { IRepository } from ".";
 import { CreateModel, PostCreateModel } from "../types/createModelTypes";

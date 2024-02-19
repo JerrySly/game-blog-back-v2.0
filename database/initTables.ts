@@ -23,6 +23,7 @@ export class Comment extends Model {
     declare uuid: string;
     text: string;
     createdBy: string;
+    postUuid: string;
     parrent: string;
 }
 
@@ -137,6 +138,10 @@ export const initTables = async (sequelize: Sequelize) => {
         createdBy: {
             type: DataTypes.UUID,
             allowNull: false, 
+        },
+        postUuid: {
+            type: DataTypes.UUID,
+            allowNull: false,
         },
         parrent: {
             type: DataTypes.UUID,
