@@ -3,4 +3,5 @@ export type UserInfo = {
     role: string,
     uuid: string,
     token: string,
+    refreshToken: string,
 }

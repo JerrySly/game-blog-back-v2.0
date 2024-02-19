@@ -17,6 +17,7 @@ export class User extends Model {
     nickname: string;
     role: string;
     password: string;
+    refreshToken: string;
 }
 
 export class Comment extends Model {
@@ -68,6 +69,10 @@ export const initTables = async (sequelize: Sequelize) => {
         role: {
             type: DataTypes.UUID,
             allowNull: true,
+        },
+        refreshToken: {
+            type: DataTypes.TEXT,
+            allowNull: false,
         }
     }, {
         sequelize,

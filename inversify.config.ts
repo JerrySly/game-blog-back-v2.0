@@ -13,6 +13,7 @@ import { UserRepository } from './domain/user.repo';
 import { CommentRepository } from './domain/comment.repo';
 import { CommentService } from './services/comment.service';
 import { UserService } from './services/user.service';
+import { AuthMiddleware } from './middleware/auth.middleware';
 
 const container = new Container();
 
@@ -24,4 +25,5 @@ container.bind(TYPES.UserService).to(UserService).inSingletonScope();
 container.bind<IRepository<Post>>(TYPES.PostRepository).to(PostRepository).inSingletonScope();
 container.bind<IRepository<User>>(TYPES.UserRepository).to(UserRepository).inSingletonScope();
 container.bind<IRepository<Comment>>(TYPES.CommentRepository).to(CommentRepository).inSingletonScope();
+container.bind(TYPES.AuthMiddleware).to(AuthMiddleware).inSingletonScope();
 export default container;

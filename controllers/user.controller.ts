@@ -6,7 +6,7 @@ import { ILogger } from "../interfaces";
 import { UserService } from "../services/user.service";
 import { inject } from "inversify";
 
-@controller('/user')
+@controller('/user', TYPES.AuthMiddleware)
 export class  UserController implements interfaces.Controller {
 
     constructor(

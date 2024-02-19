@@ -55,7 +55,7 @@ export class PostController implements interfaces.Controller {
             res.status(400).json(err);
         }
     }
-    @httpPost('/')
+    @httpPost('/', TYPES.AuthMiddleware)
     public create(@request() req: Request, @response() res: Response) {
         try {
             const { body } = req;
@@ -68,7 +68,7 @@ export class PostController implements interfaces.Controller {
             this.logger.log(`post controller erros: ${err}`);
         }
     }
-    @httpPut('/')
+    @httpPut('/', TYPES.AuthMiddleware)
     public update(@request() req: Request, @response() res: Response) {
         try {
             const { body } = req;
@@ -82,7 +82,7 @@ export class PostController implements interfaces.Controller {
             this.logger.log(`post controller erros: ${err}`);
         }
     }
-    @httpPut('/hidden/:uuid')
+    @httpPut('/hidden/:uuid', TYPES.AuthMiddleware)
     public hide(@request() req: Request, @response() res: Response) {
         try {
             const { params, body } = req;
@@ -96,7 +96,7 @@ export class PostController implements interfaces.Controller {
             this.logger.log(`post controller erros: ${err}`);
         }
     }
-    @httpDelete('/:uuid')
+    @httpDelete('/:uuid', TYPES.AuthMiddleware)
     public delete(@request() req: Request, @response() res: Response) {
         try {
             const { params } = req;

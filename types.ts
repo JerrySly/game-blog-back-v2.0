@@ -7,6 +7,7 @@ const TYPES = {
     PostService: Symbol('PostService'),
     AuthService: Symbol('AuthService'),
     UserService: Symbol('UserService'),
+    AuthMiddleware: Symbol('AuthMiddleware'),
 };
 
 export default TYPES;

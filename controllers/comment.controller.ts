@@ -1,12 +1,12 @@
 import { loggerInstance } from './../utils/logger';
-import { inject, injectable } from "inversify";
-import { httpDelete, httpGet, httpPost, httpPut, interfaces, request, response } from "inversify-express-utils";
+import { inject } from "inversify";
+import { controller, httpDelete, httpGet, httpPost, httpPut, interfaces, request, response } from "inversify-express-utils";
 import TYPES from "../types";
 import { ILogger } from "../interfaces";
 import { Request, Response } from 'express';
 import { CommentService } from '../services/comment.service';
 
-@injectable()
+@controller('/comment', TYPES.AuthMiddleware)
 export class CommentController implements interfaces.Controller {
 
     loggerInstance: ILogger;

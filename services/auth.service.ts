@@ -10,6 +10,7 @@ import { inject, injectable } from "inversify";
 import { IRepository } from "../domain";
 import { ILogger } from "../interfaces";
 
+
 @injectable()
 export class AuthService extends Service {
     repository: IRepository<User>;
@@ -33,21 +34,29 @@ export class AuthService extends Service {
                 throw new Error('Password not correct');
             }
             const key = process.env.SECRET_KEY;
+
             const token = jwt.sign({
                 _uuid: user.uuid,
-                _email: user.email,
-                _role: user.roleUuid,
-                _nickname: user.nickname,
             }, key as jwt.Secret, {
-                expiresIn: process.env.EXPIRE_TIME,
+                expiresIn: process.env.USUAL_TOKEN_EXPIRE_TIME,
             });
-    
+            
+            const refreshToken = jwt.sign({
+            }, key as jwt.Secret, {
+                expiresIn: process.env.REFRESH_TOKEN_EXPIRE_TIME,
+            })
+
+            await this.repository.update({
+                ...user,
+                refreshToken,
+            })
     
             return {
                 nickname: user.nickname,
                 role: user.roleUuid,
                 uuid: user.uuid,
                 token,
+                refreshToken: refreshToken,
             };
         } catch (error) {
             this.logger.error(`Auth service singIn error: ${error}`);
@@ -57,10 +66,16 @@ export class AuthService extends Service {
 
     async singUp(userData: Omit<User, keyof Model>): Promise<void> {
         try {
-            console.log('UserData', userData);
             const { password } = userData;
+            const key = process.env.SECRET_KEY;
+
+            const refreshToken = jwt.sign({
+            }, key as jwt.Secret, {
+                expiresIn: process.env.REFRESH_TOKEN_EXPIRE_TIME,
+            })
             if (!userData.role) userData.role = 'a2d018cc-a99a-4c24-86f4-ef0298fe2e73';
             userData.password = await hashingText(password);
+            userData.refreshToken = refreshToken;
             const beforeUser = (await User.findOne({
                 where: {
                     email: userData.email,
@@ -73,5 +88,23 @@ export class AuthService extends Service {
         } catch (error) {
             this.logger.error(`Auth service singUp error: ${error}`);
         }
+    }
+
+    async updateToken(uuid: string, refreshToken: string): Promise<string> {
+        const user = await this.repository.get(uuid);
+        if (!user) {
+            throw new Error('User is not exist');
+        }
+        if (refreshToken !== user.refreshToken) {
+            throw new Error('User refresh token is invalid');
+        }
+        const key = process.env.SECRET_KEY;
+        const token = jwt.sign({
+            __uuid: uuid,
+        }, key as jwt.Secret, {
+            expiresIn: process.env.REFRESH_TOKEN_EXPIRE_TIME,
+        })
+
+        return token;
     }
 }

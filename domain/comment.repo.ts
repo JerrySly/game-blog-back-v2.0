@@ -4,10 +4,11 @@ import { FindAndCountOptions, Model, Op, WhereOptions } from "sequelize";
 import { IRepository } from ".";
 import { CommentCreateModel, CreateModel } from "../types/createModelTypes";
 import { PageRequest, PageResponse } from "../types/page";
-import { inject } from "inversify";
+import { inject, injectable } from "inversify";
 import TYPES from "../types";
 import { ILogger } from "../interfaces";
 
+@injectable()
 export class CommentRepository implements IRepository<Comment> {
     loggerInstance: ILogger;
 
