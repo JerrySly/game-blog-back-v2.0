@@ -19,6 +19,7 @@ export class AuthService extends Service {
         this.repository = userRepo;
     }
     async singIn(email: string, password: string): Promise<UserInfo | undefined> {
+        console.log('Data', email, password);
         try {
             const user = (await User.findOne({
                 where: {

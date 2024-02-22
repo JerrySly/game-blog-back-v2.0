@@ -38,7 +38,6 @@ export class Like extends Model {
 export class Role extends Model {
     declare uuid: string;
     name: string;
-    value: number;
 }
 
 
@@ -86,10 +85,6 @@ export const initTables = async (sequelize: Sequelize) => {
         },
         name: {
             type: DataTypes.STRING,
-            allowNull: false,
-        },
-        value: {
-            type: DataTypes.INTEGER,
             allowNull: false,
         },
     }, {

@@ -38,13 +38,15 @@ export class PostController implements interfaces.Controller {
             if (query?.search) {
                 pageRequest.search = query.search as string;
             }
-            console.log('11');
+            console.log('11', pageRequest);
             this.postService.getPosts(pageRequest).then(data => {
+                console.log('Inner data', data);
                 if (!data?.count) {
-                    res.status(200).send(data);
+                    console.log('No data');
+                    res.status(200).json(data);
                     return;
                 }
-                res.status(200).send({
+                res.status(200).json({
                     data,
                     meta: this.postService.calculatePageMeta(pageRequest, data?.count)
                 });

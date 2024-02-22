@@ -27,6 +27,7 @@ export class UserRepository implements IRepository<User> {
     }
     async update(entity: Omit<User, keyof Model>): Promise<void> {
         try {
+            console.log('Entity', entity);
             const exitedEntity = await this.get(entity.uuid);
             if (!exitedEntity) throw new Error('Entity is not exits');
             User.update({
@@ -71,7 +72,6 @@ export class UserRepository implements IRepository<User> {
             return result?.dataValues;
         } catch (error) {
             this.loggerInstance.error(`Get ${User.toString()} uuid = ${uuid} error: ${error}`);
-        } finally {
             return undefined;
         }
     }
