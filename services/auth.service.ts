@@ -35,9 +35,11 @@ export class AuthService extends Service {
                 throw new Error('Password not correct');
             }
             const key = process.env.SECRET_KEY;
-
+            console.log(user);
             const token = jwt.sign({
                 _uuid: user.uuid,
+                _name: user.nickname,
+                _role: user.role,
             }, key as jwt.Secret, {
                 expiresIn: process.env.USUAL_TOKEN_EXPIRE_TIME,
             });
@@ -51,10 +53,10 @@ export class AuthService extends Service {
                 ...user,
                 refreshToken,
             })
-    
+            console.log('ROLE', user.role);
             return {
                 nickname: user.nickname,
-                role: user.roleUuid,
+                role: user.role,
                 uuid: user.uuid,
                 token,
                 refreshToken: refreshToken,

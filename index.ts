@@ -11,7 +11,7 @@ import "./controllers/auth.controller";
 import "./controllers/comment.controller";
 import "./controllers/images.controller";
 import "./controllers/user.controller";
-import "./controllers.role.controller";
+import "./controllers/role.controller";
 
 import bodyParser from "body-parser";
 import cors from "cors";

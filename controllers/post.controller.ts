@@ -19,7 +19,7 @@ export class PostController implements interfaces.Controller {
         try {
             const { params } = req;
             this.postService.getPost(params.uuid).then(data => {
-                res.status(200).send(data);
+                res.status(200).json(data);
             })
             this.logger.log('post controller: get done');
         } catch (err) {
@@ -38,12 +38,9 @@ export class PostController implements interfaces.Controller {
             if (query?.search) {
                 pageRequest.search = query.search as string;
             }
-            console.log('11', pageRequest);
             this.postService.getPosts(pageRequest).then(data => {
-                console.log('Inner data', data);
                 if (!data?.count) {
-                    console.log('No data');
-                    res.status(200).json(data);
+                    res.status(200).send();
                     return;
                 }
                 res.status(200).json({
@@ -62,7 +59,7 @@ export class PostController implements interfaces.Controller {
         try {
             const { body } = req;
             this.postService.createPost(body).then(data => {
-                res.status(200).send(data);
+                res.status(200).json(data);
             })
             this.logger.log('post controller: create done');
         } catch (err) {
@@ -75,7 +72,7 @@ export class PostController implements interfaces.Controller {
         try {
             const { body } = req;
             this.postService.editPost(body).then(data => {
-                res.status(200).send(data);
+                res.status(200).json(data);
                 res.end();
             })
             this.logger.log('post controller: update done');
@@ -89,7 +86,7 @@ export class PostController implements interfaces.Controller {
         try {
             const { params, body } = req;
             this.postService.setHiddenStatus(body.value, params.uuid).then(data => {
-                res.status(200).send(data);
+                res.status(200).json(data);
                 res.end();
             });
             this.logger.log('post controller: hidden done');
@@ -103,7 +100,7 @@ export class PostController implements interfaces.Controller {
         try {
             const { params } = req;
             this.postService.deletePost(params.uuid).then( result => {
-                res.status(200).send(result);
+                res.status(200).json(result);
             })
             this.logger.log('post controller: delete done');
         } catch (err) {
