@@ -48,7 +48,7 @@ export class AuthService extends Service {
             }, key as jwt.Secret, {
                 expiresIn: process.env.REFRESH_TOKEN_EXPIRE_TIME,
             })
-
+            console.log('SingIn', refreshToken);
             await this.repository.update({
                 ...user,
                 refreshToken,
@@ -98,6 +98,7 @@ export class AuthService extends Service {
         if (!user) {
             throw new Error('User is not exist');
         }
+        console.log(refreshToken, user.refreshToken);
         if (refreshToken !== user.refreshToken) {
             throw new Error('User refresh token is invalid');
         }

@@ -13,18 +13,18 @@ export class ImageController implements interfaces.Controller {
     @httpPost('/single', upload.single('image'))
     public async saveSingleImage(@request() req: Request, @response() res: Response) {
         if (req.file) {
-            res.status(200).send('Success')
+            res.status(200).json('Success')
         } else {
-            res.status(400).send('Invalid image file')
+            res.status(400).json('Invalid image file')
         }
     }
 
     @httpPost('/multiple', upload.array('images'))
     public async saveMultiplyImages(@request() req: Request, @response() res: Response) {
         if (req.files) {
-            res.status(200).send('Success')
+            res.status(200).json('Success')
         } else {
-            res.status(400).send('Invalid image files')
+            res.status(400).json('Invalid image files')
         }
     }
 }

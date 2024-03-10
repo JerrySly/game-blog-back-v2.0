@@ -21,6 +21,7 @@ export class PostRepository implements IRepository<Post> {
 
     async create(createEntity: PostCreateModel) {
         try {
+            console.log('create', createEntity);
             const post = Post.build({...createEntity});
             await post.save();
             this.loggerInstance.log(`Successfull create post uuid = ${post.uuid}`);

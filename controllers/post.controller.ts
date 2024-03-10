@@ -28,7 +28,7 @@ export class PostController implements interfaces.Controller {
         }
     }
     @httpGet('/')
-    public getList(@request() req: Request, @response() res: Response) {
+    public async getList(@request() req: Request, @response() res: Response) {
         try {
             const { query } = req;
             const pageRequest: PageRequest = {
@@ -38,16 +38,12 @@ export class PostController implements interfaces.Controller {
             if (query?.search) {
                 pageRequest.search = query.search as string;
             }
-            this.postService.getPosts(pageRequest).then(data => {
-                if (!data?.count) {
-                    res.status(200).send();
-                    return;
-                }
-                res.status(200).json({
-                    data,
-                    meta: this.postService.calculatePageMeta(pageRequest, data?.count)
-                });
-            })
+            const resultData = await this.postService.getPosts(pageRequest);
+            const meta = resultData?.count ? this.postService.calculatePageMeta(pageRequest, resultData?.count) : undefined;                
+            res.status(200).json({
+                data: resultData,
+                meta
+            }).end();
             this.logger.log('post controller: getList done');
         } catch (err) {
             this.logger.log(`post controller erros: ${err}`);
@@ -59,7 +55,7 @@ export class PostController implements interfaces.Controller {
         try {
             const { body } = req;
             this.postService.createPost(body).then(data => {
-                res.status(200).json(data);
+                res.status(200).json(data).end();
             })
             this.logger.log('post controller: create done');
         } catch (err) {
@@ -72,8 +68,7 @@ export class PostController implements interfaces.Controller {
         try {
             const { body } = req;
             this.postService.editPost(body).then(data => {
-                res.status(200).json(data);
-                res.end();
+                res.status(200).json(data).end();
             })
             this.logger.log('post controller: update done');
         } catch (err) {
@@ -86,8 +81,7 @@ export class PostController implements interfaces.Controller {
         try {
             const { params, body } = req;
             this.postService.setHiddenStatus(body.value, params.uuid).then(data => {
-                res.status(200).json(data);
-                res.end();
+                res.status(200).json(data).end();
             });
             this.logger.log('post controller: hidden done');
         } catch (err) {
@@ -100,7 +94,7 @@ export class PostController implements interfaces.Controller {
         try {
             const { params } = req;
             this.postService.deletePost(params.uuid).then( result => {
-                res.status(200).json(result);
+                res.status(200).json(result).end();
             })
             this.logger.log('post controller: delete done');
         } catch (err) {

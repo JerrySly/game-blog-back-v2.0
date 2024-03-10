@@ -16,11 +16,13 @@ import "./controllers/role.controller";
 import bodyParser from "body-parser";
 import cors from "cors";
 import { corsOption } from "./cors";
+import cookieParser from "cookie-parser";
 
 dotenv.config();
 const app = express();
 
 app.use(cors(corsOption));
+app.use(cookieParser());
 app.use(bodyParser.json());
 
 try {
